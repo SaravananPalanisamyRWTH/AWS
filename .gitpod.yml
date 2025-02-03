@@ -1,8 +1,30 @@
+# .gitpod.yml
+
+init:
+  - name: aws-configuration
+    command: |
+      # Create AWS credentials and config directories
+      mkdir -p ~/.aws
+
+      # Set AWS credentials
+      echo "[default]" > ~/.aws/credentials
+      echo "aws_access_key_id=$AWS_ACCESS_KEY_ID" >> ~/.aws/credentials
+      echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
+
+      # Set AWS region and output format
+      echo "[default]" > ~/.aws/config
+      echo "region=$AWS_REGION" >> ~/.aws/config
+      echo "output=json" >> ~/.aws/config
+
+      # Set permissions for the credentials and config files
+      chmod 600 ~/.aws/credentials ~/.aws/config
+
 tasks:
+  # Install AWS CLI
   - name: aws-cli-installation
     env:
       AWS_CLI_AUTO_PROMPT: on-partial  
-    before: | 
+    before: |
       cd /workspace
       curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
       unzip awscliv2.zip
@@ -10,20 +32,7 @@ tasks:
       rm -rf awscliv2.zip
       cd $THEIA_WORKSPACE_ROOT
 
+  # Install utilities like `tree`
   - name: utils
-    before: | 
+    before: |
       sudo apt-get install tree
- 
-  - name: aws-configuration
-    init: |
-      mkdir -p ~/.aws
-      echo "[default]" > ~/.aws/credentials
-      echo "aws_access_key_id=$AWS_ACCESS_KEY_ID" >> ~/.aws/credentials
-      echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
-
-      echo "[default]" > ~/.aws/config
-      echo "region=$AWS_REGION" >> ~/.aws/config
-      echo "output=json" >> ~/.aws/config
-
-      chmod 600 ~/.aws/credentials ~/.aws/config
-
