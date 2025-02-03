@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+echo "== delete stack"
+
+if [ -z "$1" ]; then
+    echo "No stack name is given"
+    exit 1
+fi
+
+STACK_NAME=$1
+
+aws cloudformation delete-stack \
+    --stack-name $STACK_NAME \
+    --region us-east-1
+
+
+
+# --no-execute-changeset only we have to accept the change
