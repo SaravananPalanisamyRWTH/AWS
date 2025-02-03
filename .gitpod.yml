@@ -2,7 +2,7 @@
 
 
 tasks:
-  # Install AWS CLI
+  # Install AWS CLI and configure
   - name: aws-cli-installation
     env:
       AWS_CLI_AUTO_PROMPT: on-partial  
@@ -14,13 +14,6 @@ tasks:
       rm -rf awscliv2.zip
       cd $THEIA_WORKSPACE_ROOT
 
-  # Install utilities like `tree`
-  - name: utils
-    before: |
-      sudo apt-get install tree
-
-  - name: aws-configuration
-    init: |
       # Create AWS credentials and config directories
       mkdir -p ~/.aws
 
@@ -36,3 +29,10 @@ tasks:
 
       # Set permissions for the credentials and config files
       chmod 600 ~/.aws/credentials ~/.aws/config
+
+
+  # Install utilities like `tree`
+  - name: utils
+    before: |
+      sudo apt-get install tree
+
