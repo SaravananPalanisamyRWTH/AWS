@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+echo "== deploy s3 bucket via CFN"
+
+if [ -z "$1" ]; then
+    echo "No bucket name is given"
+    exit 1
+fi
+
+BUCKET_NAME=$1
+STACK_NAME="cfn-s3-simple"
+
+aws cloudformation deploy \
+  --template-file template.yaml \
+  --no-execute-changeset \
+  --region us-east-1 \
+  --stack-name $STACK_NAME \
+  --parameter-override BucketName=$BUCKET_NAME
+
+
+
+# --no-execute-changeset only we have to accept the change
