@@ -9,6 +9,11 @@ tasks:
       sudo ./aws/install
       cd $THEIA_WORKSPACE_ROOT
       rm -rf awscliv2.zip
+
+  - name: utils
+    before: | 
+      sudo apt-get install tree
+ 
   - name: aws-configuration
     init: |
       mkdir -p ~/.aws
