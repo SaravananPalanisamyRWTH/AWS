@@ -1,5 +1,15 @@
 tasks:
-  - name: Configure AWS CLI
+  - name: aws-cli-installation
+    env:
+      AWS_CLI_AUTO_PROMPT: on-partial  
+    before: | 
+      cd /workspace
+      curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      unzip awscliv2.zip
+      sudo ./aws/install
+      cd $THEIA_WORKSPACE_ROOT
+      rm -rf awscliv2.zip
+  - name: aws-configuration
     init: |
       mkdir -p ~/.aws
       echo "[default]" > ~/.aws/credentials
@@ -12,12 +22,3 @@ tasks:
 
       chmod 600 ~/.aws/credentials ~/.aws/config
 
-  - name: aws-cli-installation
-    env:
-      AWS_CLI_AUTO_PROMPT: on-partial  
-    before: | 
-      cd /workspace
-      curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-      unzip awscliv2.zip
-      sudo ./aws/install
-      cd $THEIA_WORKSPACE_ROOT
