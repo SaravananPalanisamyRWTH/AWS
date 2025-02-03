@@ -1,7 +1,20 @@
 tasks:
-  - name: aws-cli
+  - name: Configure AWS CLI
+    init: |
+      mkdir -p ~/.aws
+      echo "[default]" > ~/.aws/credentials
+      echo "aws_access_key_id=$AWS_ACCESS_KEY_ID" >> ~/.aws/credentials
+      echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
+
+      echo "[default]" > ~/.aws/config
+      echo "region=$AWS_REGION" >> ~/.aws/config
+      echo "output=json" >> ~/.aws/config
+
+      chmod 600 ~/.aws/credentials ~/.aws/config
+
+  - name: aws-cli-installation
     env:
-      AWS_CLI_AUTO_PROMPT: on-partial
+      AWS_CLI_AUTO_PROMPT: on-partial  
     before: | 
       cd /workspace
       curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
