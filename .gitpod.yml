@@ -1,23 +1,5 @@
 # .gitpod.yml
 
-init:
-  - name: aws-configuration
-    command: |
-      # Create AWS credentials and config directories
-      mkdir -p ~/.aws
-
-      # Set AWS credentials
-      echo "[default]" > ~/.aws/credentials
-      echo "aws_access_key_id=$AWS_ACCESS_KEY_ID" >> ~/.aws/credentials
-      echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
-
-      # Set AWS region and output format
-      echo "[default]" > ~/.aws/config
-      echo "region=$AWS_REGION" >> ~/.aws/config
-      echo "output=json" >> ~/.aws/config
-
-      # Set permissions for the credentials and config files
-      chmod 600 ~/.aws/credentials ~/.aws/config
 
 tasks:
   # Install AWS CLI
@@ -36,3 +18,21 @@ tasks:
   - name: utils
     before: |
       sudo apt-get install tree
+
+  - name: aws-configuration
+    init: |
+      # Create AWS credentials and config directories
+      mkdir -p ~/.aws
+
+      # Set AWS credentials
+      echo "[default]" > ~/.aws/credentials
+      echo "aws_access_key_id=$AWS_ACCESS_KEY_ID" >> ~/.aws/credentials
+      echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
+
+      # Set AWS region and output format
+      echo "[default]" > ~/.aws/config
+      echo "region=$AWS_REGION" >> ~/.aws/config
+      echo "output=json" >> ~/.aws/config
+
+      # Set permissions for the credentials and config files
+      chmod 600 ~/.aws/credentials ~/.aws/config
