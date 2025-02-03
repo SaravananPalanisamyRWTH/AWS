@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+echo "== delete object"
+
+set -e 
+
+if [ -z "$1" ]; then
+    echo "There needs to be a bucket name eg. ./bucket my-buckaer-name"
+    exit 1
+fi
+
+BUCKET_NAME=$1
+
+OBJECTS_JSON=$(aws s3api list-object-versions --bucket sarvaawsbucket5 --query='{Objects: Contents[].{Key:Key}}' --output json)
+
+if echo "$OBJECTS_JSON" | jq -e '.Objects == null' >/dev/null; then
+    echo "No versions found. Nothing to delete."
+else
+    aws s3api delete-objects --bucket $OBJECTS_JSON --delete "$OBJECTS_JSON"
+    echo "All versions deleted."
+fi
+
+
+OBJECTS_JSON=$(aws s3api list-object-versions --bucket "$BUCKET_NAME" --query='{Objects: DeleteMarkers[].{Key:Key,VersionId:VersionId}}' --output json)
+if echo "$OBJECTS_JSON" | jq -e '.Objects == null' >/dev/null; then
+    echo "No markers found. Nothing to delete."
+else
+    aws s3api delete-objects --bucket $OBJECTS_JSON --delete "$OBJECTS_JSON"
+    echo "All markers deleted."
+fi
+
