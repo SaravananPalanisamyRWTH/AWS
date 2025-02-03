@@ -36,3 +36,7 @@ tasks:
     before: |
       sudo apt-get install tree
 
+
+  - name: AWS SDK Python
+    command: | 
+      pip install boto3
