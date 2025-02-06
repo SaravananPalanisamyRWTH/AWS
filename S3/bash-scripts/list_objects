@@ -1,1 +1,11 @@
 #!/usr/bin/env bash
+echo "== list object"
+if [ -z "$1" ]; then
+    echo "No bucket name is given. Eg: list_objects Mybucketname"
+    exit 1
+fi
+
+BUCKET_NAME=$1
+echo $BUCKET_NAME
+aws s3api ls s3://$BUCKET_NAME
+
